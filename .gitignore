@@ -1,0 +1,23 @@
+# Env files - NEVER commit
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Node
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+.next/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
