@@ -10,9 +10,10 @@ import {
 import { Button } from "@/components/ui/button"
 import { LogOut, User2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
-  const user=false;
+  const {user} = useSelector(store=>store.auth);
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
@@ -34,40 +35,41 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 <Link to="/login"><Button variant="outline">Login</Button></Link>
                 <Link to="/signup"><Button className="bg-[#6A38C2] hover:bg-[#4e08c5]">Signup</Button></Link>
-              </div>) :(<Popover>
-            <PopoverTrigger>
-              <Avatar className="cursor-pointer">
-                <AvatarImage src="https://github.com/shadcn.png" />
-              </Avatar>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <PopoverHeader>
-                <PopoverTitle>
-                  <div className="flex gap-4 items-center">
+              </div>
+            ) : (
+              <Popover>
+                <PopoverTrigger asChild>
                   <Avatar className="cursor-pointer">
                     <AvatarImage src="https://github.com/shadcn.png" />
                   </Avatar>
-                  <h4 className="font-medium">Dilip's MernStack</h4>
-                  </div>
-                </PopoverTitle>
-                <PopoverDescription className="ml-12">Lorem ipsum dolor sit amet.</PopoverDescription>
-              </PopoverHeader>
-              <div className="flex flex-col items-start text-gray-600 gap-2">
-                <div className="flex w-fit items-center gap-3">
-                  <User2/>
-                  <Button variant="link" className="cursor-pointer">View Profile</Button>
-                </div>
-                
-                <div className="flex w-fit items-center gap-3">
-                  <LogOut/>
-                <Button variant="link" className="cursor-pointer">Logout</Button>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>)
-          }
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <PopoverHeader>
+                    <PopoverTitle>
+                      <div className="flex gap-4 items-center">
+                        <Avatar className="cursor-pointer">
+                          <AvatarImage src="https://github.com/shadcn.png" />
+                        </Avatar>
+                        <h4 className="font-medium">Dilip's MernStack</h4>
+                      </div>
+                    </PopoverTitle>
+                    <PopoverDescription className="ml-12">Lorem ipsum dolor sit amet.</PopoverDescription>
+                  </PopoverHeader>
+                  <div className="flex flex-col items-start text-gray-600 gap-2">
+                    <div className="flex w-fit items-center gap-3">
+                      <User2 />
+                      <Button variant="link" className="cursor-pointer"><Link to="/profile">View Profile</Link></Button>
+                    </div>
 
-          
+                    <div className="flex w-fit items-center gap-3">
+                      <LogOut />
+                      <Button variant="link" className="cursor-pointer">Logout</Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )
+          }
         </div>
       </div>
     </div>
