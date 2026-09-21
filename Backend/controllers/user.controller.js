@@ -145,7 +145,7 @@ const updateProfile=async (req,res)=>{
             success:true
         })
     } catch (error) {
-        
+        console.log(e);
     }
 }
 
