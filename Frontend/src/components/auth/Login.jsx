@@ -2,8 +2,14 @@ import { Button, Input} from "@base-ui/react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { RadioGroup} from "@/components/ui/radio-group";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { toast } from "sonner"
+import { USER_API_END_POINT } from "@/utils/contant";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import {Loader2 } from "lucide-react";
 
 const Login = () => {
     const [input,setInput]=useState({
@@ -11,15 +17,40 @@ const Login = () => {
             password:"",
             role:"",
         });
+
+        const {loading} = useSelector(store=>store.auth);
+        const navigate = useNavigate();
+        const dispatch=useDispatch();
     
         const changeEventHandler=(e)=>{
             setInput({...input,[e.target.name]:e.target.value});
         }
     
+        // const submitHandler=async(e)=>{
+        //     e.preventDefault();
+        //     console.log(input);
+        // }
+
         const submitHandler=async(e)=>{
-            e.preventDefault();
-            console.log(input);
+        e.preventDefault();
+        try {
+          dispatch(setLoading(true));
+            const res=await axios.post(`${USER_API_END_POINT}/login`,input,{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                withCredentials:true,
+            });
+            if(res.data.success){
+                navigate("/");
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }finally{
+          dispatch(setLoading(false));
         }
+    }
 
   return (
     <div>
@@ -64,7 +95,25 @@ const Login = () => {
               </div>
             </RadioGroup>
           </div>
-          <Button type="submit" className="w-full my-4 border rounded-sm h-10 bg-black text-white">Signup</Button>
+{
+    loading ? (
+        <Button
+            disabled
+            className="w-full my-4 border rounded-sm h-10 bg-black text-white flex items-center justify-center gap-2"
+        >
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>Please Wait</span>
+        </Button>
+    ) : (
+        <Button
+            type="submit"
+            className="w-full my-4 border rounded-sm h-10 bg-black text-white"
+        >
+            Login
+        </Button>
+    )
+}
+          
           <span className="text-sm">Don't have an account? <Link to="/signup" className="text-blue-600">Signup</Link></span>
         </form>
       </div>

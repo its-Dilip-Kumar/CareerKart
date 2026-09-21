@@ -1,13 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Toaster } from 'sonner'
 import './index.css'
 import App from './App.jsx'
-import { toast } from "sonner"
-import { Toast } from '@base-ui/react'
+import {Provider} from 'react-redux';
+import store from './redux/store'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <Provider store={store}>
     <App />
-    <Toast/>
+    <Toaster richColors position="top-right" />
+    </Provider>
   </StrictMode>,
 )
