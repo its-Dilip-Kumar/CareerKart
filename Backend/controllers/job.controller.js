@@ -62,7 +62,9 @@ const getAllJobs=async(req,res)=>{
 const getJobById=async (req,res)=>{
     try {
         const jobId=req.params.id;
-        const job=await Job.findById(jobId);
+        const job=await Job.findById(jobId).populate({
+            path:"applications"
+        })
         if(!job){
             return res.status(404).json({
                 message:"Jobs not found",
@@ -76,24 +78,27 @@ const getJobById=async (req,res)=>{
 }
 
 //admin ne kitne jobs create kiye hai 
-const getAdminJobs=async(req,res)=>{
-    try {
-        const adminId=req.id;
-        const jobs=await Job.find({created_by:adminId});
-        if(!jobs){
-            return res.status(404).json({
-                message:"Jobs not found",
-                success:false
-            })
-        }
-        return res.status(200).json({
-            jobs,
-            success:true
-        })
-    } catch (error) {
-        console.log(error);
+const getAdminJobs = async (req, res) => {
+  try {
+    const adminId = req.id;
+    console.log("=== ADMIN JOBS DEBUG ===");
+    console.log("Admin ID:", adminId);
+
+    const jobs = await Job.find({ created_by: adminId })
+      .populate("company")
+      .sort({ createdAt: -1 });
+
+    console.log("Jobs count:", jobs.length);
+    if (jobs.length > 0) {
+      console.log("First job:", JSON.stringify(jobs[0], null, 2));
     }
-}
+
+    return res.status(200).json({ jobs, success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong", success: false });
+  }
+};
 
 
 module.exports={postJob,getAllJobs,getJobById,getAdminJobs};
