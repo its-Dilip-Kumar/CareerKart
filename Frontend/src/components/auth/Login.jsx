@@ -3,7 +3,7 @@ import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "@/utils/contant";
 import axios from "axios";
@@ -18,7 +18,7 @@ const Login = () => {
     role: "",
   });
 
-  const { loading } = useSelector((store) => store.auth);
+  const { loading,user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,6 +52,12 @@ const Login = () => {
       dispatch(setLoading(false));
     }
   };
+
+  useEffect(()=>{
+    if(user){
+      navigate("/");
+    }
+  })
 
   return (
     <div>

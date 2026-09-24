@@ -1,63 +1,93 @@
-import { Bookmark } from 'lucide-react';
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { useNavigate } from 'react-router-dom';
+import { Bookmark } from "lucide-react";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
-const Job = ({job}) => {
-  const navigate=useNavigate();
-  // const jobId="dsoghosdg";
-  const daysAgoFunction=(mongodbTime)=>{
-    const createdAt=new Date(mongodbTime);
-    const currentTime=new Date();
-    const timeDifference=currentTime-createdAt;
-    return Math.floor(timeDifference/(1000*24*60*60));
-  }
-    return (
-        <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100">
-            <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">{daysAgoFunction(job?.createdAt)===0 ? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`}</p>
-            <Button variant="outline" className="rounded-full" size="icon">
-                <Bookmark />
-            </Button>
-            </div>
+const Job = ({ job }) => {
+  const navigate = useNavigate();
 
-            <div className="flex items-center gap-2 my-2">
-            <Button className="p-6" variant="outline" size="icon">
-            <Avatar>
-                <AvatarImage src="https://cdn.pixabay.com/photo/2023/02/01/00/54/company-7759278_1280.png" />
-            </Avatar>
-            </Button>
-            <div>
-                <h1 className="font-medium text-lg">{job?.company?.name}</h1>
-                <p className="text-sm text-gray-500">India</p>
-            </div>
-            </div>
+  const daysAgoFunction = (mongodbTime) => {
+    const createdAt = new Date(mongodbTime);
+    const currentTime = new Date();
+    const timeDifference = currentTime - createdAt;
+    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
+  };
 
-            <div>
-                <h1 className="font-bold text-lg my-2">{job?.title}</h1>
-                <p className="text-sm text-gray-600">{job?.description}</p>
-            </div>
+  // Job type ko "Full Time" / "Part Time" jaisa banane ke liye
+  const formatJobType = (type = "") => {
+    const map = {
+      fulltime: "Full Time",
+      "full-time": "Full Time",
+      "full time": "Full Time",
+      parttime: "Part Time",
+      "part-time": "Part Time",
+      "part time": "Part Time",
+      internship: "Internship",
+      remote: "Remote",
+      contract: "Contract",
+      freelance: "Freelance",
+    };
+    const key = type.toLowerCase().trim();
+    return map[key] || type;
+  };
 
-            <div className="flex items-center gap-2 mt-4">
-        <Badge className={"text-blue-700 font-bold"} variant="secondary">
-          {job?.position}
+  return (
+    <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-gray-500">
+          {daysAgoFunction(job?.createdAt) === 0
+            ? "Today"
+            : `${daysAgoFunction(job?.createdAt)} days ago`}
+        </p>
+        <Button variant="outline" className="rounded-full" size="icon">
+          <Bookmark />
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-2 my-2">
+        <Button className="p-6" variant="outline" size="icon">
+          <Avatar>
+            <AvatarImage src={job?.company?.logo} />
+          </Avatar>
+        </Button>
+        <div>
+          <h1 className="font-medium text-lg">{job?.company?.name}</h1>
+          <p className="text-sm text-gray-500">India</p>
+        </div>
+      </div>
+
+      <div>
+        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
+        <p className="text-sm text-gray-600">{job?.description}</p>
+      </div>
+
+      <div className="flex items-center gap-2 mt-4">
+        <Badge className="text-blue-700 font-bold" variant="secondary">
+          {job?.position} {job?.position > 1 ? "Positions" : "Position"}
         </Badge>
-        <Badge className={"text-[#F83002] font-bold"} variant="secondary">
-          {job?.jobType}
+
+        <Badge className="text-[#F83002] font-bold" variant="secondary">
+          {formatJobType(job?.jobType)}
         </Badge>
-        <Badge className={"text-[#7209b7] font-bold"} variant="secondary">
-          {job?.salary}
+
+        <Badge className="text-[#7209b7] font-bold" variant="secondary">
+          {job?.salary} LPA
         </Badge>
       </div>
 
       <div className="flex items-center gap-4 mt-4">
-        <Button onClick={()=>navigate(`/description/${job?._id}`)} variant="outline">Details</Button>
+        <Button
+          onClick={() => navigate(`/description/${job?._id}`)}
+          variant="outline"
+        >
+          Details
+        </Button>
         <Button className="bg-[#7209b7]">Save for later</Button>
       </div>
-        </div>
-    );
-}
+    </div>
+  );
+};
 
 export default Job;

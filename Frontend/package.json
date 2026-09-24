@@ -19,6 +19,7 @@
     "cloudinary": "^2.11.0",
     "cn": "^0.3.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^13.4.2",
     "lucide-react": "^1.47.0",
     "multer": "^2.4.0",
     "react": "^19.2.8",

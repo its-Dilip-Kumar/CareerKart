@@ -17,14 +17,11 @@ const register = async (req, res) => {
         };
 
         const file = req.file;
-        console.log("FILE:", file);
-        console.log("FILE BUFFER:", file?.buffer);
 
-        // ✅ File ho to hi upload karo
         let profilePhotoUrl = "";
         if (file) {
             const fileUri = getDataUri(file);
-            const cloudResponse = await cloudinary.uploader.upload(fileUri, {
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {   // ✅ .content
                 resource_type: "auto"
             });
             if (cloudResponse) {
@@ -160,7 +157,6 @@ const updateProfile = async (req, res) => {
         if (bio) user.profile.bio = bio;
         if (skills) user.profile.skills = skillsArray;
 
-        // ✅ Cloudinary block — sirf jab file ho
         if (file) {
             const fileUri = getDataUri(file);
             const cloudResponse = await cloudinary.uploader.upload(fileUri, {

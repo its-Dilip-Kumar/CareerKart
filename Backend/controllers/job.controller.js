@@ -77,7 +77,6 @@ const getJobById=async (req,res)=>{
     }
 }
 
-//admin ne kitne jobs create kiye hai 
 const getAdminJobs = async (req, res) => {
   try {
     const adminId = req.id;

@@ -78,9 +78,9 @@ const updateCompany = async (req, res) => {
 
     console.log("=== UPDATE COMPANY ===");
     console.log("BODY:", req.body);
-    console.log("FILE:", req.file);             // 👈
-    console.log("FILE.BUFFER:", req.file?.buffer);   // 👈
-    console.log("FILE.ORIGINALNAME:", req.file?.originalname);  // 👈
+    console.log("FILE:", req.file);            
+    console.log("FILE.BUFFER:", req.file?.buffer);   
+    console.log("FILE.ORIGINALNAME:", req.file?.originalname); 
     const { name, description, website, location } = req.body;
     const file = req.file;
 
